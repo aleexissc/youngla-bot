@@ -19,105 +19,105 @@ DISCORD_WEBHOOK_URL = os.getenv(
 PRODUCTS = [
     {
         "name": "Compresión negra Batman (4259)",
-        "url": "https://www.youngla.com/products/4259?hcUrl=%2Fes-ES",
+        "url": "https://www.youngla.com/products/4259",
         "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
         "colors": ["black", "dark grey", "grey green", "off-white"],
         "no_size": False,
     },
     {
         "name": "Producto 8004",
-        "url": "https://www.youngla.com/products/8004?hcUrl=%2Fes-ES",
+        "url": "https://www.youngla.com/products/8004",
         "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
         "colors": ["black", "dark grey", "grey green", "off-white"],
         "no_size": False,
     },
     {
         "name": "Producto 5174",
-        "url": "https://www.youngla.com/products/5174?_pos=3&_sid=7412087b5&_ss=r&variant=45034422927548&hcUrl=%2Fes-ES",
+        "url": "https://www.youngla.com/products/5174",
         "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
         "colors": ["bane h", "batman h"],
         "no_size": False,
     },
     {
         "name": "Producto 5173",
-        "url": "https://www.youngla.com/products/5173?_pos=10&_sid=7412087b5&_ss=r&hcUrl=%2Fes-ES",
+        "url": "https://www.youngla.com/products/5173",
         "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
         "colors": ["black wash", "grey wash"],
         "no_size": False,
     },
     {
         "name": "Producto 2158",
-        "url": "https://www.youngla.com/products/2158?_pos=11&_sid=7412087b5&_ss=r&hcUrl=%2Fes-ES",
+        "url": "https://www.youngla.com/products/2158",
         "sizes": ["Small", "Medium", "Large", "XLarge"],
         "colors": ["action", "the battle black", "the battle grey"],
         "no_size": False,
     },
     {
         "name": "Producto 5209",
-        "url": "https://www.youngla.com/products/5209?_pos=14&_sid=7412087b5&_ss=r&hcUrl=%2Fes-ES",
+        "url": "https://www.youngla.com/products/5209",
         "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
         "colors": ["black wash", "grey wash"],
         "no_size": False,
     },
     {
         "name": "Producto 2099",
-        "url": "https://www.youngla.com/products/2099?_pos=25&_sid=7412087b5&_ss=r&hcUrl=%2Fes-ES",
+        "url": "https://www.youngla.com/products/2099",
         "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
         "colors": ["black wash", "grey wash"],
         "no_size": False,
     },
     {
         "name": "Producto 5218",
-        "url": "https://www.youngla.com/products/5218?_pos=26&_sid=7412087b5&_ss=r",
+        "url": "https://www.youngla.com/products/5218",
         "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
         "colors": ["black wash", "grey wash"],
         "no_size": False,
     },
     {
         "name": "Producto 5214",
-        "url": "https://www.youngla.com/products/5214?_pos=17&_sid=7412087b5&_ss=r&hcUrl=%2Fes-ES",
+        "url": "https://www.youngla.com/products/5214",
         "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
         "colors": ["black"],
         "no_size": False,
     },
     {
         "name": "Producto 9062 (gorra)",
-        "url": "https://www.youngla.com/products/9062?_pos=20&_sid=7412087b5&_ss=r&hcUrl=%2Fes-ES",
+        "url": "https://www.youngla.com/products/9062",
         "sizes": [],
         "colors": ["black", "grey"],
         "no_size": True,  # sin tallas, solo colores
     },
     {
         "name": "Producto 4255",
-        "url": "https://www.youngla.com/products/4255?_pos=7&_sid=7412087b5&_ss=r&variant=45034407723196&hcUrl=%2Fes-ES",
+        "url": "https://www.youngla.com/products/4255",
         "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
         "colors": ["batman car p", "batman p"],
         "no_size": False,
     },
     {
         "name": "Producto 4065",
-        "url": "https://www.youngla.com/products/4065?_pos=3&_sid=1ef06ab16&_ss=r&hcUrl=%2Fes-ES",
+        "url": "https://www.youngla.com/products/4065",
         "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
         "colors": ["black/blue", "black/red", "grey/blue"],
         "no_size": False,
     },
     {
         "name": "Producto 5079",
-        "url": "https://www.youngla.com/products/5079?_pos=2&_sid=28b770262&_ss=r&hcUrl=%2Fes-ES",
+        "url": "https://www.youngla.com/products/5079",
         "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
         "colors": ["black wash", "blue wash"],
         "no_size": False,
     },
     {
         "name": "Producto 2032",
-        "url": "https://www.youngla.com/products/2032?_pos=13&_sid=28b770262&_ss=r&hcUrl=%2Fes-ES",
+        "url": "https://www.youngla.com/products/2032",
         "sizes": ["Small", "Medium", "Large", "XLarge"],
         "colors": ["black wash", "blue wash", "heather grey"],
         "no_size": False,
     },
     {
         "name": "Producto 5094",
-        "url": "https://www.youngla.com/products/5094?_pos=12&_sid=28b770262&_ss=r&hcUrl=%2Fes-ES",
+        "url": "https://www.youngla.com/products/5094",
         "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
         "colors": ["black wash"],
         "no_size": False,
@@ -143,10 +143,9 @@ IN_STOCK_KEYWORDS = [
 # ================= CLIENTE HTTP =================
 
 session = tls_client.Session(
-    client_identifier="chrome_124",
-    random_tls_extension_order=True
+    client_identifier="chrome_120",   # otro fingerprint de Chrome
+    random_tls_extension_order=False  # orden estable de extensiones TLS
 )
-
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
