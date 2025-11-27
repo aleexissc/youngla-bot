@@ -2,20 +2,21 @@ import time
 import random
 import tls_client
 import os
+import json
 from typing import Optional
 
 # ================= CONFIGURACIÓN =================
 
 # 1) TU WEBHOOK DE DISCORD
-#    Opción A (simple): pega aquí tu webhook directamente entre comillas
-#    Opción B (pro): usa variable de entorno DISCORD_WEBHOOK_URL en Railway
 DISCORD_WEBHOOK_URL = os.getenv(
     "DISCORD_WEBHOOK_URL",
     "https://discord.com/api/webhooks/1443365834893299832/m6R7PP-KjY00thKJosdhVIY7GpCD9hTkkZme27uhsjfLKZ10gvaSFNHtA0MnqGYSKvWW"
 )
 
 # 2) PRODUCTOS A MONITOREAR
-#    Aquí ya van TODAS tus tallas/colores normalizados
+#   - urls limpias (sin ?_pos, _sid, etc.)
+#   - tallas en formato YoungLA: Small, Medium, Large, XLarge, XXLarge
+#   - colores en minúsculas
 PRODUCTS = [
     {
         "name": "Compresión negra Batman (4259)",
@@ -85,7 +86,7 @@ PRODUCTS = [
         "url": "https://www.youngla.com/products/9062",
         "sizes": [],
         "colors": ["black", "grey"],
-        "no_size": True,  # sin tallas, solo colores
+        "no_size": True,  # sin talla, solo color
     },
     {
         "name": "Producto 4255",
@@ -127,36 +128,24 @@ PRODUCTS = [
 # 3) Intervalo entre rondas (segundos)
 CHECK_INTERVAL_SECONDS = 60  # 1 minuto
 
-OUT_OF_STOCK_KEYWORDS = [
-    "sold out",
-    "out of stock",
-    "email when available",
-    "notify me when available",
-    "notify me",
-]
-
-IN_STOCK_KEYWORDS = [
-    "add to cart",
-    "add to bag"
-]
-
 # ================= CLIENTE HTTP =================
 
+# Cliente TLS tipo navegador real
 session = tls_client.Session(
-    client_identifier="chrome_120",   # otro fingerprint de Chrome
-    random_tls_extension_order=False  # orden estable de extensiones TLS
+    client_identifier="chrome_120",
+    random_tls_extension_order=False
 )
+
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                  "AppleWebKit/537.36 (KHTML, like Gecko) "
+                  "Chrome/124.0.0.0 Safari/537.36",
+    "Accept": "application/json,text/javascript,*/*;q=0.01",
     "Accept-Language": "en-US,en;q=0.9",
     "Referer": "https://www.youngla.com/",
     "Connection": "keep-alive",
-    "Sec-Fetch-Site": "same-origin",
-    "Sec-Fetch-Mode": "navigate",
-    "Sec-Fetch-Dest": "document",
-    "Upgrade-Insecure-Requests": "1"
 }
+
 # ================= FUNCIONES =================
 
 def send_discord_message(message: str) -> None:
@@ -172,116 +161,109 @@ def send_discord_message(message: str) -> None:
         print(f"[ERROR] No se pudo enviar mensaje a Discord: {e}")
 
 
-def fetch_page(url: str) -> Optional[str]:
+def fetch_product_json(url: str) -> Optional[dict]:
+    """
+    Usa el endpoint oficial de Shopify:
+    https://www.youngla.com/products/<handle>.js
+    que regresa JSON con todas las variantes.
+    """
     try:
-        resp = session.get(url, headers=HEADERS)
+        base = url.split("?", 1)[0].rstrip("/")
+        json_url = base + ".js"
+        resp = session.get(json_url, headers=HEADERS)
         if resp.status_code != 200:
             raise Exception(f"HTTP {resp.status_code}")
-        return resp.text
+        return json.loads(resp.text)
     except Exception as e:
-        print(f"[ERROR] Error al descargar {url}: {e}")
+        print(f"[ERROR] Error al descargar JSON de {url}: {e}")
         return None
 
 
-def variant_matches(snippet_lower: str, product: dict) -> bool:
+def variant_matches(variant: dict, product: dict) -> bool:
     """
-    Verifica si el bloque de variante (alrededor de '\"available\":true')
-    coincide con las tallas/colores configurados para ese producto.
+    Verifica si la variante coincide con:
+    - alguno de los colores configurados
+    - y (si aplica) alguna de las tallas configuradas
     """
     colors_cfg = [c.lower() for c in product.get("colors", [])]
     sizes_cfg = [s.lower() for s in product.get("sizes", [])]
     no_size = bool(product.get("no_size"))
 
-    # Colores: si se configuraron, se exige que aparezca al menos uno
+    # Texto combinado de la variante: título + opciones
+    parts = [
+        str(variant.get("title", "")),
+        str(variant.get("option1", "")),
+        str(variant.get("option2", "")),
+        str(variant.get("option3", "")),
+    ]
+    text = " ".join(parts).lower()
+
+    # Color
     if colors_cfg:
-        if not any(color in snippet_lower for color in colors_cfg):
+        if not any(color in text for color in colors_cfg):
             return False
 
-    # Si es producto sin talla (gorra), sólo nos importa el color
+    # Si no tiene talla (gorra), con color basta
     if no_size:
         return True
 
-    # Tallas: si se configuraron, se exige que aparezca al menos una
+    # Talla
     if sizes_cfg:
-        if not any(size in snippet_lower for size in sizes_cfg):
+        if not any(size in text for size in sizes_cfg):
             return False
 
     return True
 
 
-def has_any_variant_available(html: str, product: dict) -> bool:
+def has_any_acceptable_variant(product_json: dict, product_cfg: dict) -> bool:
     """
-    Revisa si hay alguna variante disponible (\"available\":true)
-    que además coincida con tallas y colores permitidos para ese producto.
+    Revisa si existe al menos una variante:
+    - disponible (available == True)
+    - que coincida con tallas/colores de product_cfg
     """
-    html_lower = html.lower()
-
-    if '"available":true' not in html_lower:
-        # Ninguna variante disponible
+    variants = product_json.get("variants", [])
+    if not variants:
         return False
 
     found_any_available = False
     found_allowed = False
 
-    search_str = '"available":true'
-    pos = 0
-
-    while True:
-        idx = html_lower.find(search_str, pos)
-        if idx == -1:
-            break
+    for v in variants:
+        available = bool(v.get("available"))
+        if not available:
+            continue
 
         found_any_available = True
 
-        # Tomamos un bloque alrededor de la marca "available":true
-        # para capturar el título, opciones, etc. de esa variante.
-        start = max(0, idx - 400)
-        end = idx + 200
-        snippet_lower = html_lower[start:end]
-
-        if variant_matches(snippet_lower, product):
+        if variant_matches(v, product_cfg):
             found_allowed = True
             break
-
-        pos = idx + len(search_str)
 
     if found_allowed:
         return True
 
     if found_any_available and not found_allowed:
-        print("⚠️ Sólo hay variantes disponibles que NO cumplen con tallas/colores configurados.")
+        print("⚠️ Hay variantes disponibles pero ninguna coincide con tus tallas/colores.")
         return False
 
     return False
 
-
-def is_in_stock(html: str) -> bool:
-    html_lower = html.lower()
-    has_in = any(k in html_lower for k in IN_STOCK_KEYWORDS)
-    has_out = any(k in html_lower for k in OUT_OF_STOCK_KEYWORDS)
-    return has_in and not has_out
-
-
-def is_out_of_stock(html: str) -> bool:
-    html_lower = html.lower()
-    return any(keyword in html_lower for keyword in OUT_OF_STOCK_KEYWORDS)
-
 # ================= PROCESO PRINCIPAL =================
 
 def main():
-    print("Iniciando monitor de YoungLA 🚀...")
+    print("Iniciando monitor de YoungLA (endpoint .js) 🚀...")
     print(f"Total de productos configurados: {len(PRODUCTS)}\n")
 
     while True:
         for product in PRODUCTS:
             print(f"Revisando: {product['name']} -> {product['url']}")
-            html = fetch_page(product["url"])
+            data = fetch_product_json(product["url"])
 
-            if html is None:
-                print("❌ Error al obtener la página, se pasa al siguiente.\n")
+            if data is None:
+                print("❌ Error al obtener el JSON del producto, se pasa al siguiente.\n")
                 continue
 
-            if has_any_variant_available(html, product):
+            if has_any_acceptable_variant(data, product):
                 msg = (
                     "🔥 RESTOCK DISPONIBLE 🔥\n"
                     f"Producto: {product['name']}\n"
