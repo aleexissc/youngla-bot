@@ -15,63 +15,116 @@ DISCORD_WEBHOOK_URL = os.getenv(
 )
 
 # 2) PRODUCTOS A MONITOREAR
+#    Aquí ya van TODAS tus tallas/colores normalizados
 PRODUCTS = [
     {
         "name": "Compresión negra Batman (4259)",
-        "url": "https://www.youngla.com/products/4259"
+        "url": "https://www.youngla.com/products/4259?hcUrl=%2Fes-ES",
+        "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
+        "colors": ["black", "dark grey", "grey green", "off-white"],
+        "no_size": False,
     },
     {
         "name": "Producto 8004",
-        "url": "https://www.youngla.com/products/8004?hcUrl=%2Fes-ES"
+        "url": "https://www.youngla.com/products/8004?hcUrl=%2Fes-ES",
+        "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
+        "colors": ["black", "dark grey", "grey green", "off-white"],
+        "no_size": False,
     },
     {
-        "name": "Producto 5218",
-        "url": "https://www.youngla.com/products/5218?_pos=26&_sid=b8554f4f3&_ss=r"
-    },
-    {
-        "name": "Producto 2099",
-        "url": "https://www.youngla.com/products/2099?_pos=25&_sid=b8554f4f3&_ss=r&hcUrl=%2Fes-ES"
-    },
-    {
-        "name": "Producto 5214",
-        "url": "https://www.youngla.com/products/5214?_pos=17&_sid=b8554f4f3&_ss=r&hcUrl=%2Fes-ES"
-    },
-    {
-        "name": "Producto 5209",
-        "url": "https://www.youngla.com/products/5209?_pos=14&_sid=b8554f4f3&_ss=r&hcUrl=%2Fes-ES"
-    },
-    {
-        "name": "Producto 2158 (excluye Joker Goons)",
-        "url": "https://www.youngla.com/products/2158?_pos=11&_sid=b8554f4f3&_ss=r&hcUrl=%2Fes-ES"
+        "name": "Producto 5174",
+        "url": "https://www.youngla.com/products/5174?_pos=3&_sid=7412087b5&_ss=r&variant=45034422927548&hcUrl=%2Fes-ES",
+        "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
+        "colors": ["bane h", "batman h"],
+        "no_size": False,
     },
     {
         "name": "Producto 5173",
-        "url": "https://www.youngla.com/products/5173?_pos=10&_sid=b8554f4f3&_ss=r&hcUrl=%2Fes-ES"
+        "url": "https://www.youngla.com/products/5173?_pos=10&_sid=7412087b5&_ss=r&hcUrl=%2Fes-ES",
+        "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
+        "colors": ["black wash", "grey wash"],
+        "no_size": False,
     },
     {
-        "name": "Producto 2032",
-        "url": "https://www.youngla.com/products/2032?_pos=13&_sid=5942173a7&_ss=r"
+        "name": "Producto 2158",
+        "url": "https://www.youngla.com/products/2158?_pos=11&_sid=7412087b5&_ss=r&hcUrl=%2Fes-ES",
+        "sizes": ["Small", "Medium", "Large", "XLarge"],
+        "colors": ["action", "the battle black", "the battle grey"],
+        "no_size": False,
     },
     {
-        "name": "Producto 5094",
-        "url": "https://www.youngla.com/products/5094?_pos=12&_sid=5942173a7&_ss=r&hcUrl=%2Fes-ES"
+        "name": "Producto 5209",
+        "url": "https://www.youngla.com/products/5209?_pos=14&_sid=7412087b5&_ss=r&hcUrl=%2Fes-ES",
+        "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
+        "colors": ["black wash", "grey wash"],
+        "no_size": False,
     },
     {
-        "name": "Producto 5079",
-        "url": "https://www.youngla.com/products/5079?_pos=2&_sid=5942173a7&_ss=r&hcUrl=%2Fes-ES"
+        "name": "Producto 2099",
+        "url": "https://www.youngla.com/products/2099?_pos=25&_sid=7412087b5&_ss=r&hcUrl=%2Fes-ES",
+        "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
+        "colors": ["black wash", "grey wash"],
+        "no_size": False,
+    },
+    {
+        "name": "Producto 5218",
+        "url": "https://www.youngla.com/products/5218?_pos=26&_sid=7412087b5&_ss=r",
+        "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
+        "colors": ["black wash", "grey wash"],
+        "no_size": False,
+    },
+    {
+        "name": "Producto 5214",
+        "url": "https://www.youngla.com/products/5214?_pos=17&_sid=7412087b5&_ss=r&hcUrl=%2Fes-ES",
+        "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
+        "colors": ["black"],
+        "no_size": False,
+    },
+    {
+        "name": "Producto 9062 (gorra)",
+        "url": "https://www.youngla.com/products/9062?_pos=20&_sid=7412087b5&_ss=r&hcUrl=%2Fes-ES",
+        "sizes": [],
+        "colors": ["black", "grey"],
+        "no_size": True,  # sin tallas, solo colores
+    },
+    {
+        "name": "Producto 4255",
+        "url": "https://www.youngla.com/products/4255?_pos=7&_sid=7412087b5&_ss=r&variant=45034407723196&hcUrl=%2Fes-ES",
+        "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
+        "colors": ["batman car p", "batman p"],
+        "no_size": False,
     },
     {
         "name": "Producto 4065",
-        "url": "https://www.youngla.com/products/4065?_pos=3&_sid=2181e5158&_ss=r&hcUrl=%2Fes-ES"
+        "url": "https://www.youngla.com/products/4065?_pos=3&_sid=1ef06ab16&_ss=r&hcUrl=%2Fes-ES",
+        "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
+        "colors": ["black/blue", "black/red", "grey/blue"],
+        "no_size": False,
     },
     {
-        "name": "Producto 5174 (excluye Joker H)",
-        "url": "https://www.youngla.com/products/5174?_pos=3&_sid=060084b7a&_ss=r&variant=45034422927548&hcUrl=%2Fes-ES"
+        "name": "Producto 5079",
+        "url": "https://www.youngla.com/products/5079?_pos=2&_sid=28b770262&_ss=r&hcUrl=%2Fes-ES",
+        "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
+        "colors": ["black wash", "blue wash"],
+        "no_size": False,
+    },
+    {
+        "name": "Producto 2032",
+        "url": "https://www.youngla.com/products/2032?_pos=13&_sid=28b770262&_ss=r&hcUrl=%2Fes-ES",
+        "sizes": ["Small", "Medium", "Large", "XLarge"],
+        "colors": ["black wash", "blue wash", "heather grey"],
+        "no_size": False,
+    },
+    {
+        "name": "Producto 5094",
+        "url": "https://www.youngla.com/products/5094?_pos=12&_sid=28b770262&_ss=r&hcUrl=%2Fes-ES",
+        "sizes": ["Small", "Medium", "Large", "XLarge", "XXLarge"],
+        "colors": ["black wash"],
+        "no_size": False,
     },
 ]
 
 # 3) Intervalo entre rondas (segundos)
-#    Cada ronda revisa TODOS los productos una vez
 CHECK_INTERVAL_SECONDS = 60  # 1 minuto
 
 OUT_OF_STOCK_KEYWORDS = [
@@ -87,15 +140,8 @@ IN_STOCK_KEYWORDS = [
     "add to bag"
 ]
 
-# Variantes que NO quieres que disparen alerta
-EXCLUDED_VARIANTS = [
-    "Joker Goons",
-    "Joker H",
-]
-
 # ================= CLIENTE HTTP =================
 
-# Cliente TLS para simular navegador real
 session = tls_client.Session(
     client_identifier="chrome_124",
     random_tls_extension_order=True
@@ -136,10 +182,36 @@ def fetch_page(url: str) -> Optional[str]:
         return None
 
 
-def has_any_variant_available(html: str) -> bool:
+def variant_matches(snippet_lower: str, product: dict) -> bool:
     """
-    Revisa si hay alguna variante disponible (available:true)
-    y se asegura de que NO sean solo variantes excluidas (Joker Goons / Joker H).
+    Verifica si el bloque de variante (alrededor de '\"available\":true')
+    coincide con las tallas/colores configurados para ese producto.
+    """
+    colors_cfg = [c.lower() for c in product.get("colors", [])]
+    sizes_cfg = [s.lower() for s in product.get("sizes", [])]
+    no_size = bool(product.get("no_size"))
+
+    # Colores: si se configuraron, se exige que aparezca al menos uno
+    if colors_cfg:
+        if not any(color in snippet_lower for color in colors_cfg):
+            return False
+
+    # Si es producto sin talla (gorra), sólo nos importa el color
+    if no_size:
+        return True
+
+    # Tallas: si se configuraron, se exige que aparezca al menos una
+    if sizes_cfg:
+        if not any(size in snippet_lower for size in sizes_cfg):
+            return False
+
+    return True
+
+
+def has_any_variant_available(html: str, product: dict) -> bool:
+    """
+    Revisa si hay alguna variante disponible (\"available\":true)
+    que además coincida con tallas y colores permitidos para ese producto.
     """
     html_lower = html.lower()
 
@@ -147,23 +219,12 @@ def has_any_variant_available(html: str) -> bool:
         # Ninguna variante disponible
         return False
 
-    # Si hay available:true, revisamos si TODAS las disponibles son excluidas
-    def is_excluded_near(index: int) -> bool:
-        # Busca hacia atrás un poco para ver el título de la variante
-        start = max(0, index - 300)
-        snippet = html_lower[start:index + 50]
-        for variant in EXCLUDED_VARIANTS:
-            pattern = f'"title":"{variant.lower()}"'
-            if pattern in snippet:
-                return True
-        return False
-
-    # Bandera: encontramos al menos una variante NO excluida disponible
-    found_allowed = False
     found_any_available = False
+    found_allowed = False
 
     search_str = '"available":true'
     pos = 0
+
     while True:
         idx = html_lower.find(search_str, pos)
         if idx == -1:
@@ -171,10 +232,13 @@ def has_any_variant_available(html: str) -> bool:
 
         found_any_available = True
 
-        if is_excluded_near(idx):
-            # Esta available:true parece ser de una variante excluida
-            print("🛑 Variante excluida disponible (se ignora).")
-        else:
+        # Tomamos un bloque alrededor de la marca "available":true
+        # para capturar el título, opciones, etc. de esa variante.
+        start = max(0, idx - 400)
+        end = idx + 200
+        snippet_lower = html_lower[start:end]
+
+        if variant_matches(snippet_lower, product):
             found_allowed = True
             break
 
@@ -184,7 +248,7 @@ def has_any_variant_available(html: str) -> bool:
         return True
 
     if found_any_available and not found_allowed:
-        print("⚠️ Solo variantes excluidas disponibles por ahora.")
+        print("⚠️ Sólo hay variantes disponibles que NO cumplen con tallas/colores configurados.")
         return False
 
     return False
@@ -216,7 +280,7 @@ def main():
                 print("❌ Error al obtener la página, se pasa al siguiente.\n")
                 continue
 
-            if has_any_variant_available(html):
+            if has_any_variant_available(html, product):
                 msg = (
                     "🔥 RESTOCK DISPONIBLE 🔥\n"
                     f"Producto: {product['name']}\n"
@@ -226,7 +290,6 @@ def main():
             else:
                 print("Aún sin stock aceptable ❌\n")
 
-        # Espera al final de la ronda (después de revisar TODOS los productos)
         sleep_time = CHECK_INTERVAL_SECONDS + random.randint(1, 5)
         print(f"⏱️ Esperando {sleep_time} segundos para la siguiente ronda...\n")
         time.sleep(sleep_time)
